@@ -76,6 +76,4 @@ Implementing this with the current base was technically challenging for two reas
 
 These restrictions mean that we can only read and adjust for the distance along one axis at any one point in time. In order to maintain equidistance in all directions, SpaceMaker rotates ~1 quadrant every few seconds. By repeated sampling of random axes, SpaceMaker can maintain equidistance on average.
 
-With only a back-and-forth motion and two ultrasound sensors (I added another one to the back of the base) with noisy readings, our SpaceMaker has a limited model of the world and a limited ability to move around. This makes it hard to deterministically find the centre of a space. But by repeatedly sampling from opposite directions, and adding in rotations, we can expect to find the centre on average.
-
 ![Equidistance Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_equidistance.gif)
