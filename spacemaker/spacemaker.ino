@@ -1,5 +1,6 @@
+#include <SoftwareSerial.h>
 // define pin values
-const int left_forward = 9;
+const int left_wheel = 9;
 const int right_wheel = 10;
 const int right_back = 6;
 const int left_back = 5;
@@ -7,6 +8,8 @@ const int trig = A0;
 const int echo = A1;
 const int trig2 = A2;
 const int echo2 = A3;
+
+SoftwareSerial EEBlue(10, 11); // RX | TX
 
 /* set robot mode
  * TODO: use IR receiver to set robot mode
@@ -25,10 +28,11 @@ int robot_mode = 2;
 
 void setup() {
   // set up serial monitor
-  Serial.begin(9600);
+  Serial.begin(115200);
+  EEBlue.begin(115200); //Default Baud for comm, it may be different for your Module. Serial.println("The bluetooth gates are open.\n Connect to HC-05 from any other bluetooth device with 1234 as pairing key!.");
 
   // set up motors
-  pinMode(left_forward, OUTPUT);
+  pinMode(left_wheel, OUTPUT);
   pinMode(right_wheel, OUTPUT);
   pinMode(left_back, OUTPUT);
   pinMode(right_back, OUTPUT);
@@ -49,8 +53,11 @@ void loop() {
   else if (robot_mode == 1) {
     gantry();
   }
-  else {
+  else if (robot_mode == 2) {
     maintain_equidistance();
+  }
+  else if (robot_mode == 3) {
+    
   }
 }
 
@@ -190,24 +197,24 @@ int fire_ultrasound(int cur_trig, int cur_echo) {
 }
 
 void halt() {
-  analogWrite(left_forward, 0);
-  analogWrite(right_wheel, 0);
-  analogWrite(left_back, 0);
-  analogWrite(right_back, 0);
+  digitalWrite(left_wheel, LOW);
+  digitalWrite(right_wheel, LOW);
+  digitalWrite(left_back, LOW);
+  digitalWrite(right_back, LOW);
 }
 
 void rotate(int quadrants) {
   halt();
-  analogWrite(left_back, 255);
-  analogWrite(right_wheel, 235);
-  delay(quadrants*1000);
+  digitalWrite(left_back, HIGH);
+  digitalWrite(right_wheel, HIGH);
+  delay(quadrants*100);
   halt();
 }
 
 void forward(int distance) {
   halt();
-  analogWrite(left_forward, 255);
-  analogWrite(right_wheel, 255);
+  digitalWrite(left_wheel, HIGH);
+  digitalWrite(right_wheel, HIGH);
   delay(1000 * distance);
   halt();
 }
@@ -222,7 +229,7 @@ void backward(int distance) {
 
 void forward_continuous() {
   halt();
-  analogWrite(left_forward, 255);
+  analogWrite(left_wheel, 255);
   analogWrite(right_wheel, 255);
 }
 
