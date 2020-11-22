@@ -3,9 +3,9 @@
 const int left_wheel = 2;
 const int pwm_l = 3;
 const int left_back = 4;
-const int right_wheel = 5;
+const int right_back = 5;
 const int pwm_r = 6;
-const int right_back = 7;
+const int right_wheel = 7;
 const int trig = A0;
 const int echo = A1;
 const int trig2 = A2;
@@ -26,10 +26,10 @@ SoftwareSerial EEBlue(10, 11); // RX | TX
  *         so that a population of SpaceMaker bots can create social
  *         distance
  */
-int robot_mode = 2;
+int robot_mode = 3;
 int quads = 4;
 int l_power = 75;
-int r_power = 105;
+int r_power = 105;  
 
 void setup() {
   // set up serial monitor
