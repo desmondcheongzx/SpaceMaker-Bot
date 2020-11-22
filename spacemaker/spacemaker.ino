@@ -1,9 +1,11 @@
 #include <SoftwareSerial.h>
 // define pin values
-const int left_wheel = 9;
-const int right_wheel = 10;
-const int right_back = 6;
-const int left_back = 5;
+const int left_wheel = 2;
+const int pwm_l = 3;
+const int left_back = 4;
+const int right_wheel = 5;
+const int pwm_r = 6;
+const int right_back = 7;
 const int trig = A0;
 const int echo = A1;
 const int trig2 = A2;
@@ -25,6 +27,9 @@ SoftwareSerial EEBlue(10, 11); // RX | TX
  *         distance
  */
 int robot_mode = 2;
+int quads = 4;
+int l_power = 75;
+int r_power = 105;
 
 void setup() {
   // set up serial monitor
@@ -36,6 +41,8 @@ void setup() {
   pinMode(right_wheel, OUTPUT);
   pinMode(left_back, OUTPUT);
   pinMode(right_back, OUTPUT);
+  pinMode(pwm_l, OUTPUT);
+  pinMode(pwm_r, OUTPUT);
 
   // set up ultrasound sensors
   // echo/trig correspond to the front ultrasound
@@ -44,6 +51,8 @@ void setup() {
   pinMode(trig, OUTPUT);
   pinMode(echo2, INPUT);
   pinMode(trig2, OUTPUT);
+  analogWrite(pwm_l, l_power);
+  analogWrite(pwm_r, r_power);
 }
 
 void loop() {
@@ -57,7 +66,48 @@ void loop() {
     maintain_equidistance();
   }
   else if (robot_mode == 3) {
-    
+    check_bt();
+  }
+}
+
+void check_bt() {
+  if (EEBlue.available()) {
+    char val = EEBlue.read();
+    Serial.write(val);
+    if (val == 'w') {
+      forward(1);
+    }
+    if (val == 's') {
+      backward(1);
+    }
+    if (val == 'a') {
+      rotate_l(quads);
+    }
+    if (val == 'd') {
+      rotate_r(quads);
+    }
+    if (val == '2') {
+      quads++;
+    }
+    if (val == '3') {
+      quads--;
+    }
+    if (val == '0') {
+      l_power += 25;
+      analogWrite(pwm_l, l_power);
+    }
+    if (val == '9') {
+      l_power -= 5;
+      analogWrite(pwm_l, l_power);
+    } 
+    if (val == '8') {
+      r_power += 25;
+      analogWrite(pwm_r, r_power);
+    }
+    if (val == '7') {
+      r_power -= 5;
+      analogWrite(pwm_r, r_power);
+    }
   }
 }
 
@@ -207,6 +257,22 @@ void rotate(int quadrants) {
   halt();
   digitalWrite(left_back, HIGH);
   digitalWrite(right_wheel, HIGH);
+  delay(quadrants*100);
+  halt();
+}
+
+void rotate_l(int quadrants) {
+  halt();
+  digitalWrite(left_back, HIGH);
+  digitalWrite(right_wheel, HIGH);
+  delay(quadrants*100);
+  halt();
+}
+
+void rotate_r(int quadrants) {
+  halt();
+  digitalWrite(left_wheel, HIGH);
+  digitalWrite(right_back, HIGH);
   delay(quadrants*100);
   halt();
 }
