@@ -19,11 +19,14 @@ Additionally, we rely on form to encourage certain behaviours. Traffic cones are
 
 
 ## Iteration #1 - Moving the robot and initial designs
+### Iteration #1.1 Adding a second ultrasound sensor
+From the very first sketch it was clear to me that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance.
+### Iteration #1.2 Reliable ultrasound distance sensing
 ## Iteration #2 - Traffic cones and playing with form
 small cone -> Medium cone ->
-## Iteration #3 - More power and H-bridges
+## Iteration #3 - Solving movement issues with more power and H-bridges
 
-### Iteration #3.5 - Safety concerns
+### Iteration #3.1 - Safety concerns
 As we added more power, I started thinking about ways to control power. The initial reasoning was to preserve battery charge so that I could maximise the voltage that SpaceMaker was receiving. It was around 
 
 Once I first experienced smoking in my circuits, as well as multiple wires melting and burning me, I knew that this was no longer simply a power conservation issue, but a safety issue. The first step of course, was to solder on a switch like we had done with the smaller batteries. This gave us an emergency power cut-off every time something went wrong. The next step was to prevent things from going wrong in the first place.
@@ -33,6 +36,36 @@ I'd noticed that it was always the same wire that melted: a thin wire that conne
 Finally, there was still further electrical interference between the Arduino board and the H-bridge. Realising that this was the cause of various unexpected behaviours and short-circuits took some time, but once I realised it, separating the two circuit boards with a non-conducting material was sufficient to solve the issue.
 
 ## Iteration #4 - Going wireless
+### Iteration #4.1 On-the-fly pulse-width modulation
+As our prototype became more fleshed out and the deadline for the final video drew nearer, we had to start testing out SpaceMaker in different terrains. However, outdoor terrains were challenging because slopes and debris would often cause SpaceMaker to stall. Thankfully, we'd just spent weeks scaling up the amount of power available to our DC motors, so this could easily be solved by increasing the pulse-width modulation (PWM) of each motor according to their performance.
+
+To improve the convenience of fine-tuning the PWM as well as to add the ability to adjust the PWM as we went from terrain to terrain, I added a switch to the Bluetooth input loop. Now, in addition to movement commands, we could simply send numeric characters to SpaceMaker via Bluetooth in order to adjust the power being sent to each motor. It's a little crude, but it worked for our circumstances.
+```
+void check_bt() {
+  if (EEBlue.available()) {
+    char bt_val = EEBlue.read();
+    switch(bt_val) {
+      ...
+      case '2':
+        l_power += 25;
+        analogWrite(pwm_l, l_power);
+        break;
+      case '1':
+        l_power -= 5;
+        analogWrite(pwm_l, l_power);
+        break;
+      case '9':
+        r_power += 25;
+        analogWrite(pwm_r, r_power);
+        break;
+      case '8':
+        r_power -= 5;
+        analogWrite(pwm_r, r_power);
+        break;
+    }
+  }
+}
+```
 
 ## Future directions
 
@@ -43,11 +76,11 @@ Finally, there was still further electrical interference between the Arduino boa
 ### Mechanical improvements
 Watching the SpaceMaker bot move, we immediately notice that it moves in fits and starts. And because it brakes abruptly, it is prone to falling over when moving on a slope. Some colleagues mentioned that this motion was endearing, and I do agree that I would like some of this character to remain in future iterations. However, as it is, the mechanical issues currently limit the potential use-cases for SpaceMaker. Even for the use cases presented in the demo video, multiple takes had to be filmed because SpaceMaker would occasionally move erratically or tip itself over. A natural solution would then be to solve the mechanical issues that SpaceMaker currently faces, then adding more human-like movements afterwards. Some potential ideas are discussed below.
 
-1. __Smoother pulse-width modulation.__
+1. __Smoother pulse-width modulation.__ One reason for the jerky movements is that we currently only have one power setting for movement. This means that starting and stopping motions are all-or-nothing and thus abrupt. If we instead slowly ramped up the power and then tapered it off as a movement starts and stops, then SpaceMaker would also move more smoothly.
 
-2. __Add a gearbox.__
+2. __Add a gearbox.__ Even if we could taper off the power fed to our motors as a movement ends, the start of a movement still poses a challenge. DC motors, under load and in a high friction environment, require a lot of current to avoid stalling. This means that slowly ramping up power wouldn't produce a smooth start because the robot wouldn't even be able to start moving until a threshold is reached. And once that threshold is reached, we start moving abruptly and quickly. To solve this, we can use a gearbox with a high gear ratio when a movement begins. This ensures that we can smoothly generate sufficient torque to move even at slow starting speeds. 
 
-3. __Larger wheels.__ Currently, due to the small diameter of the wheels, cracks and bumps cause SpaceMaker to stumble and even stall. 
+3. __Larger wheels.__ Currently, due to the small diameter of the wheels, cracks and bumps cause SpaceMaker to stumble and even stall. However, larger wheels can only be installed in tandem with adding a gearbox, otherwise we wouldn't be able to generate sufficient torque.
 
 4. __Improved weight distribution.__ To improve the overall balance of SpaceMaker, we can either increase the diameter of the base, or shift its centre of gravity downwards. We could lower its centre of gravity by shifting heavier components such as the two battery packs down onto the base chasis. Another option would be to add ballast to the robot.
 
