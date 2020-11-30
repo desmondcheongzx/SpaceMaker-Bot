@@ -68,13 +68,15 @@ void check_bt() {
 ```
 
 ## Future directions
+As the semester came to a close, we had to start wrapping up our projects. However, if there were one truism that we've learnt from this course, it would be that every iteration informs the next iteration. True enough, after making my final prototype and hearing my colleagues' critiques, I'm left with many ideas to try out. Someday, if I have the itch to work on a hardware project again, I might well implement some of these improvements. But for now here are my thoughts.
 
 ### Form
 
 ### Multiple robots + collective behaviour
+One of the original goals for this project was to have multiple SpaceMaker bots interacting and communicating with each other. It eventually became clear that there were other pressing issues to work on before this would be possible, so this idea was shelved for the time being. However, I believe this is still an interesting problem, and one rich with possibilities. Thinking through some of the ideas in [collective animal behaviour](https://www.goodreads.com/book/show/9856806-collective-animal-behavior), a mobile Arduino with a distance sensor should be more than capable of producing rich collective behaviour patterns. We wouldn't even need to enable Bluetooth communication between each SpaceMaker unit. It would be interesting to explore some theoretical questions in this area, as well as translate them to some productive application.
 
 ### Mechanical improvements
-Watching the SpaceMaker bot move, we immediately notice that it moves in fits and starts. And because it brakes abruptly, it is prone to falling over when moving on a slope. Some colleagues mentioned that this motion was endearing, and I do agree that I would like some of this character to remain in future iterations. However, as it is, the mechanical issues currently limit the potential use-cases for SpaceMaker. Even for the use cases presented in the demo video, multiple takes had to be filmed because SpaceMaker would occasionally move erratically or tip itself over. A natural solution would then be to solve the mechanical issues that SpaceMaker currently faces, then adding more human-like movements afterwards. Some potential ideas are discussed below.
+Watching SpaceMaker move, it's immediately noticeable that it moves in fits and starts. Moreover, because it brakes abruptly, it is prone to falling over when moving on a slope. As it is, the mechanical issues currently limit the potential use cases for SpaceMaker. Even for the use cases presented in the demo video, multiple takes had to be filmed because SpaceMaker would occasionally move erratically or tip itself over. However, some colleagues mentioned that this motion was endearing and I do agree that I would like some of this character to remain in future iterations. A natural solution to this dilemma would be to solve the mechanical issues that SpaceMaker currently faces, then add human-like movements afterwards. Some potential ideas are discussed below.
 
 1. __Smoother pulse-width modulation.__ One reason for the jerky movements is that we currently only have one power setting for movement. This means that starting and stopping motions are all-or-nothing and thus abrupt. If we instead slowly ramped up the power and then tapered it off as a movement starts and stops, then SpaceMaker would also move more smoothly.
 
@@ -83,6 +85,16 @@ Watching the SpaceMaker bot move, we immediately notice that it moves in fits an
 3. __Larger wheels.__ Currently, due to the small diameter of the wheels, cracks and bumps cause SpaceMaker to stumble and even stall. However, larger wheels can only be installed in tandem with adding a gearbox, otherwise we wouldn't be able to generate sufficient torque.
 
 4. __Improved weight distribution.__ To improve the overall balance of SpaceMaker, we can either increase the diameter of the base, or shift its centre of gravity downwards. We could lower its centre of gravity by shifting heavier components such as the two battery packs down onto the base chasis. Another option would be to add ballast to the robot.
+
+## Final remarks
+
+I've been a programmer for nearly half my life now. I enjoy the activity greatly because there's a rich and ever-growing toolset to develop anything you can imagine. I also find it very soothing because while software can behave erratically, it's a familiar beast that can be tamed by relaxing into the system. Working with hardware this semester was a completely different experience from the rest of my university career.
+
+I'll always fondly recall my childhood playing with Lego Mindstorms, an 
+
+Hardware lessons aside, this has been a rich lesson in ideation and prototyping. I hope to carry this experience into the many projects and discussions to come in the future.
+[insert pixar picture]
+
 
 ### Sensors and Actuators
 
