@@ -14,17 +14,8 @@ However, as can be seen from the demo video, this idea has evolved beyond encour
 
 
 ## Iteration #1 - Moving the robot and initial designs
-### Iteration #1.1 Adding a second ultrasound sensor
-From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The question was how should this sensor be mounted?
 
-The first ultrasound sensor had a convenient dock at the front of the mobile chasis, however no such dock existed for a second ultrasound. As such, we laser cut a holder for this rear ultrasound.
-
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG" height="250"/>
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg" height="250"/>
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg" height="250"/>
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg" height="250"/>
-
-### Iteration #1.2 Reliable ultrasound distance sensing
+### Iteration #1.1 Reliable ultrasound distance sensing
 One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
 
 Let's say that at some timestep _t_ we have a true distance _x_ that produces noisy ultrasound readings _y_ ~ Normal(_x_, _some variance_). These seem like valid assumptions to make, and if our readings do indeed follow this distribution, then we can take advantage of the Law of Large Numbers to estimate _x_ by taking the average of all the ultrasounds readings _y_ at time _t_. As the number of readings we take increases, the variance of our average decreases and we converge to the true distance _x_. However, we don't want to carry out too many readings because each reading takes awhile to complete, which slows down our robot's reaction time. Thankfully, if our assumptions are valid, the Central Limit Theorem kicks in very fast when we sample from a normal distribution, and so a handful of readings are more than sufficient. Our improved ultrasound sensor performs as follows.
@@ -44,6 +35,17 @@ We could have also explored using a hidden markov model with the true distance a
 
 ## Iteration #2 - Traffic cones and experimenting with form
 small cone -> Medium cone ->
+
+### Iteration #2.1 Adding a second ultrasound sensor
+From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The question was how should this sensor be mounted?
+
+The first ultrasound sensor had a convenient dock at the front of the mobile chasis, however no such dock existed for a second ultrasound. As such, we laser cut a holder for this rear ultrasound.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg" height="250"/>
+
 ## Iteration #3 - Solving movement issues with more power and H-bridges
 
 ### Iteration #3.1 - Safety concerns
