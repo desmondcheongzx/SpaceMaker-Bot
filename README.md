@@ -20,7 +20,14 @@ Additionally, we rely on form to encourage certain behaviours. Traffic cones are
 
 ## Iteration #1 - Moving the robot and initial designs
 ### Iteration #1.1 Adding a second ultrasound sensor
-From the very first sketch it was clear to me that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance.
+From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The question was how should this sensor be mounted?
+
+The first ultrasound sensor had a convenient dock at the front of the mobile chasis, however no such dock existed for a second ultrasound. As such, we laser cut a holder for this rear ultrasound.
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG " height="100"/>
+![Ultrasound holder image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg)
+![Ultrasound holder image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg)
+![Ultrasound holder image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg)
+
 ### Iteration #1.2 Reliable ultrasound distance sensing
 One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
 
