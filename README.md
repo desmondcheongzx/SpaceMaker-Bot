@@ -1,4 +1,4 @@
-# SpaceMaker-Bot
+# SpaceMaker Bot
 
 Demo video: https://vimeo.com/482537350
 
@@ -42,7 +42,7 @@ int get_distance(int cur_trig, int cur_echo) {
 ```
 We could have also explored using a hidden markov model with the true distance as the latent variable, and the ultrasound reading as the observed variable. Our true distance is allowed to change from state to state, but every true distance is correlated with its previous true distance. Moreover, ultrasound readings are correlated with the true distance at the point in time. We could even combine this method with the averaging method above. These dependencies should give us a model that's resilient to noisy ultrasound readings. It would be interesting to see how accurate we could make our ultrasound readings using computation alone, but that's an experiment for another time.
 
-## Iteration #2 - Traffic cones and playing with form
+## Iteration #2 - Traffic cones and experimenting with form
 small cone -> Medium cone ->
 ## Iteration #3 - Solving movement issues with more power and H-bridges
 
