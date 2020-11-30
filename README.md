@@ -22,6 +22,23 @@ Additionally, we rely on form to encourage certain behaviours. Traffic cones are
 ### Iteration #1.1 Adding a second ultrasound sensor
 From the very first sketch it was clear to me that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance.
 ### Iteration #1.2 Reliable ultrasound distance sensing
+One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
+
+Let's say that at some timestep _t_ we have a true distance _x_ that produces noisy ultrasound readings _y_ ~ Normal(_x_, _some variance_). These seem like valid assumptions to make, and if our readings do indeed follow this distribution, then we can take advantage of the Law of Large Numbers to estimate _x_ by taking the average of all the ultrasounds readings _y_ at time _t_. As the number of readings we take increases, the variance of our average decreases and we converge to the true distance _x_. However, we don't want to carry out too many readings because each reading takes awhile to complete, which slows down our robot's reaction time. Thankfully, if our assumptions are valid, the Central Limit Theorem kicks in very fast when we sample from a normal distribution, and so a handful of readings are more than sufficient. Our improved ultrasound sensor performs as follows.
+```
+int get_distance(int cur_trig, int cur_echo) {
+  int sum = 0;
+  int n_trials = 15;
+  // fire the ultrasound multiple times and take the minimum reading
+  for (int a = 0; a < n_trials; ++a) {
+    int distance = fire_ultrasound(cur_trig, cur_echo);
+    sum += distance;
+  }
+  return distance / n_trials;
+}
+```
+We could have also explored using a hidden markov model with the true distance as the latent variable, and the ultrasound reading as the observed variable. Our true distance is allowed to change from state to state, but every true distance is correlated with its previous true distance. Moreover, ultrasound readings are correlated with the true distance at the point in time. We could even combine this method with the averaging method above. These dependencies should give us a model that's resilient to noisy ultrasound readings. It would be interesting to see how accurate we could make our ultrasound readings using computation alone, but that's an experiment for another time.
+
 ## Iteration #2 - Traffic cones and playing with form
 small cone -> Medium cone ->
 ## Iteration #3 - Solving movement issues with more power and H-bridges
@@ -71,6 +88,9 @@ void check_bt() {
 As the semester came to a close, we had to start wrapping up our projects. However, if there were one truism that we've learnt from this course, it would be that every iteration informs the next iteration. True enough, after making my final prototype and hearing my colleagues' critiques, I'm left with many ideas to try out. Someday, if I have the itch to work on a hardware project again, I might well implement some of these improvements. But for now here are my thoughts.
 
 ### Form
+Throughout the development of SpaceMaker, there has consistent feedback on how its form could be experimented with or improved. In particular, the size of the traffic cone that SpaceMaker uses could make a big difference in how its read. Previously we faced various constraints with the size of the cones we could use with SpaceMaker because heavy loads made the robot stall. However, now that the motor issues have been resolved, we're freed up to experiment.
+
+What would happen if SpaceMaker was completely enveloped in a traffic cone? In this case, people would either expect SpaceMaker to be an ordinary traffic cone; or, when they've had enough interactions with SpaceMaker, they might start assuming that every traffic cone around them has the potential for movement. To try out this idea, we would either have to purchase a large enough traffic cone (a full 28" cone perhaps?), or construct such a cone. We could then use one of our earlier mounting systems to attach this cone to SpaceMaker, then attach its ultrasound sensors to the exterior surface of the cone, or drill holes for the ultrasound sensors.
 
 ### Multiple robots + collective behaviour
 One of the original goals for this project was to have multiple SpaceMaker bots interacting and communicating with each other. It eventually became clear that there were other pressing issues to work on before this would be possible, so this idea was shelved for the time being. However, I believe this is still an interesting problem, and one rich with possibilities. Thinking through some of the ideas in [collective animal behaviour](https://www.goodreads.com/book/show/9856806-collective-animal-behavior), a mobile Arduino with a distance sensor should be more than capable of producing rich collective behaviour patterns. We wouldn't even need to enable Bluetooth communication between each SpaceMaker unit. It would be interesting to explore some theoretical questions in this area, as well as translate them to some productive application.
