@@ -1,19 +1,14 @@
 # SpaceMaker-Bot
 
+Demo video: https://vimeo.com/482537350
+
 ## Concept
 
-The SpaceMaker bot started out as a concept to tacitly encourage social distancing. During the currant pandemic, everyone is constantly inundated with messages to maintian their distance. However, this system could use improvements. Perhaps because it's a new concept (I'd not heard anyone talk about "social distancing" prior to 2020 even despite living through the 2003 SARS pandemic), or perhaps because of fatigue, people don't seem to be very good at it. Many people are diligent about maintaining their distance from strangers of course, but when you're in the same space working and communicating with people you're familiar with, it's easy to forget or to slightly bend the rules about maintaining a 6 feet distance with others.
+The SpaceMaker bot started out as a concept to tacitly encourage social distancing. During the currant pandemic, everyone is constantly inundated with messages to maintain their distance. However, this system could use improvements. After months of hearing the same message, people get fatigued. Additionally, there is a natural impulse for humans to move closer, because that's the nature and pattern of human interaction.
 
-I thought that maybe we could make the act of social distancing a natural one through the use of objects around us. How? My first idea was that you could take robots that maintained equidistance from all the objects around them, then place a bunch of them in a public space. Because the robots would move out of the way, people could still walk through the space. But if we made the robot.......
+So the idea was that instead of relying on explicit messages to maintain social distance, another possibility was to rely on innate patterns of social interaction. One innate instinct is to avoid moving objects, or to step away from objects that are steadily moving towards you. Another instinct is to follow certain authoritative forms such as traffic cones. Traffic cones are possibly universally used around the world to delimit spaces and control the movement of people and objects, and so we rely on this form to tacitly encourage social distancing.
 
-
-![Front view of SpaceMaker](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/front.jpg)
-
-SpaceMaker Bot is a concept designed to encourage tacit social distancing. During the current pandemic, everyone is constantly inundated with messages to maintain their distance. However, this system could use improvements. After months of hearing the same message, people get fatigued. Additionally, there is a natural impulse for humans to move closer, because that's the nature and pattern of human interaction.
-
-A good method to encourage people to prevent people from getting too close should also rely on innate patterns of social interaction. One innate instinct is to avoid moving objects, or to step away from objects that are steadily moving towards you. This idea underlies the movement patterns of SpaceMaker.
-
-Additionally, we rely on form to encourage certain behaviours. Traffic cones are possibly universally used to control the movement of people and objects. We leverage this authority of form in order to enhance SpaceMaker's ability to create distance.
+However, as can be seen from the demo video, this idea has evolved beyond encouraging social distancing, to rethinking how we can automate the delimination of space. This provides us with a rich possibility of applications ranging from traffic control (such as for [reversible lanes](https://en.wikipedia.org/wiki/Reversible_lane)), or human movement control in both public and private spaces.
 
 ![Tag team](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tag_team.gif)
 
@@ -23,10 +18,11 @@ Additionally, we rely on form to encourage certain behaviours. Traffic cones are
 From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The question was how should this sensor be mounted?
 
 The first ultrasound sensor had a convenient dock at the front of the mobile chasis, however no such dock existed for a second ultrasound. As such, we laser cut a holder for this rear ultrasound.
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG " height="100"/>
-![Ultrasound holder image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg)
-![Ultrasound holder image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg)
-![Ultrasound holder image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg)
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg" height="250"/>
 
 ### Iteration #1.2 Reliable ultrasound distance sensing
 One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
@@ -51,15 +47,30 @@ small cone -> Medium cone ->
 ## Iteration #3 - Solving movement issues with more power and H-bridges
 
 ### Iteration #3.1 - Safety concerns
-As we added more power, I started thinking about ways to control power. The initial reasoning was to preserve battery charge so that I could maximise the voltage that SpaceMaker was receiving. It was around 
+As we added more power, I started thinking about ways to control power such as with a switch. The initial reasoning was to preserve battery charge so that I could maximise the voltage that SpaceMaker was receiving. But around the time that I switched to a 9.6V 2400mAh NiMH battery pack, my circuits started to smoke, and I melted through wires on multiple occassions.
 
-Once I first experienced smoking in my circuits, as well as multiple wires melting and burning me, I knew that this was no longer simply a power conservation issue, but a safety issue. The first step of course, was to solder on a switch like we had done with the smaller batteries. This gave us an emergency power cut-off every time something went wrong. The next step was to prevent things from going wrong in the first place.
+[insert pic of melted wire]
 
-I'd noticed that it was always the same wire that melted: a thin wire that connected the ground of the H-bridge to the ground of the Arduino board. I spent some time thinking about how I could remove this wire from the circuit, but it was a necessary connection for the Arduino board to control the relays and PWMs in the H-bridge. I roped in my housemate who's majoring in engineering, but neither of us could figure out what was going wrong in the circuit. So in the end we decided that if the wire was melting because there was too much current flowing through it, we simply had to increase the resistance of the wire. Playing around, we found that a 330 ohm resistor was sufficient to prevent further mishaps, while still allowing sufficient current to flow through.
+This was now no longer a question of power conservation, but a question of safety. So now before testing any circuits with new battery packs, we made sure to first solder on a switch between the battery pack and the H-bridge. This gave us an emergency power cut-off every time something went wrong. The next step was to prevent things from going wrong in the first place.
 
-Finally, there was still further electrical interference between the Arduino board and the H-bridge. Realising that this was the cause of various unexpected behaviours and short-circuits took some time, but once I realised it, separating the two circuit boards with a non-conducting material was sufficient to solve the issue.
+[insert pic of switch]
+
+Going through our notes on the burnt wires, I noticed that it was always the same wire that melted: a thin wire that connected the ground of the H-bridge to the ground of the Arduino board. I spent some time thinking about how I could remove this wire from the circuit, but it was a necessary connection for the Arduino board to control the relays and PWMs in the H-bridge. I roped in my housemate who's majoring in engineering, but neither of us could figure out what was going wrong in the circuit. So in the end we decided that if the wire was melting because there was too much current flowing through it, we simply had to increase the resistance of the wire. Playing around, we found that a 330 ohm resistor was sufficient to prevent further mishaps, while still allowing sufficient current to flow through.
+
+[insert pic of resistor]
+
+Finally, there was still further electrical interference between the Arduino board and the H-bridge. Realising that this was the cause of various unexpected behaviours and short-circuits took some time, but once I realised it, separating the two circuit boards with a non-conducting material was easy enough and sufficient to solve the issue.
 
 ## Iteration #4 - Going wireless
+
+Following the previous iteration, we finally get reliable movement from SpaceMaker and can now move on to some other interesting questions. At the start of this project, I was curious about how a population of SpaceMakers might change the pattern of human movement and interaction within a space. I was also curious about what communication between robots and a central controller could offer in terms of applications. These ideas necessitated some form of communication between SpaceMakers and/or a command centre (which could be another SpaceMaker). So it was finally time to jump into Bluetooth communication.
+
+I'd worked with a Python Bluetooth library before so I didn't expect too many challenges. But since I got my Bluetooth modules at the cheapest price point possible, I found myself with two modules and no documentation to work with. Thankfully there were many tutorials, YouTube videos, and fora available on the HC-05 module. Within a week we managed to set up a Bluetooth connection between our Arduino and a laptop or smartphone.
+
+[insert wireless gif]
+
+This was also the stage where we were pretty familiar with the whole system we were working with, so many other tweaks took place. For example, adjusting the length of spacers used to improve the balance provided by ball bearings; removing the default wires to the mobile chasis and simplifying the wiring; adding a platform above the circuit boards to protect the wiring as well as provide a stable base for holding the battery packs and lose components such as the Bluetooth module and switches.
+
 ### Iteration #4.1 On-the-fly pulse-width modulation
 As our prototype became more fleshed out and the deadline for the final video drew nearer, we had to start testing out SpaceMaker in different terrains. However, outdoor terrains were challenging because slopes and debris would often cause SpaceMaker to stall. Thankfully, we'd just spent weeks scaling up the amount of power available to our DC motors, so this could easily be solved by increasing the pulse-width modulation (PWM) of each motor according to their performance.
 
@@ -91,6 +102,14 @@ void check_bt() {
 }
 ```
 
+## Creating the demo video
+At this point, we had a working prototype and it was time to create a demo video. Throughout the prototyping process, I had imagined SpaceMaker to be a social distancing robot as originally envisioned. However, as we worked on the prototype and the various technical challenges came to light, it became clear that we would need a lot more technical progress (most notably, the ability to use multiple SpaceMakers) before some of these ideas become feasible. I also wasn't convinced that social distancing was the right use case for this robot, and slowly lost interest in that idea.
+
+Then, after many showers spent thinking about this, I noticed that there were many traffic cones next to each apartment in the place where I live. This prompted the question of whether SpaceMaker could be used to expand the range of use cases for existing traffic cones, which eventually led to the idea of proximity-based traffic cones in parking lots. This would enable users such as homeowners/passholders/handicapped drivers to reserve parking spaces.
+
+I also drew inspiration from one of my colleague's projects for a [smart sign](https://hiloni25.tumblr.com/post/635750285256572928/smart-sign). I thought that it would be interesting to make a mobile version of the smart sign, which would be a natural extension of SpaceMaker's current design because traffic cones already serve as a form of warning, and we had also established a wireless connection between SpaceMaker and smartphones.
+
+Finally, there was the actual filming of these ideas. I found this to be a very productive process in terms of ideation. When explaining the concept of the video to my film crew (my housemates), I needed to pinpoint the ideas that I wanted to convey and the scenes we would need to achieve this. At the same time, the team pointed out where some ideas didn't make much sense, or where they could be improved or better presented. In the process the concepts being presented became much more refined compared to the very rough story board I had prepared (see below). This goes to show how we slowly become overfamiliar with a concept while we work, which makes us blind to various shortcomings. In times like these, outside perspectives are imperative to improve the design and communication of an idea.
 ## Future directions
 As the semester came to a close, we had to start wrapping up our projects. However, if there were one truism that we've learnt from this course, it would be that every iteration informs the next iteration. True enough, after making my final prototype and hearing my colleagues' critiques, I'm left with many ideas to try out. Someday, if I have the itch to work on a hardware project again, I might well implement some of these improvements. But for now here are my thoughts.
 
@@ -114,14 +133,9 @@ Watching SpaceMaker move, it's immediately noticeable that it moves in fits and 
 4. __Improved weight distribution.__ To improve the overall balance of SpaceMaker, we can either increase the diameter of the base, or shift its centre of gravity downwards. We could lower its centre of gravity by shifting heavier components such as the two battery packs down onto the base chasis. Another option would be to add ballast to the robot.
 
 ## Final remarks
+Coming from a software background, I was caught completely off gaurd by the complexities involved in working with hardware. Instead of only working with ideas and code, there were questions of design, material, weight, circuits, power, and all sorts of other physical considerations to take note of. In light of all this complexity, it was very important to move back-and-forth, side-to-side, from rough sketches to higher and higher resolution prototypes. This has been a rich lesson in ideation and prototyping and I hope to carry this experience into the many projects and discussions to come in life.
 
-I've been a programmer for nearly half my life now. I enjoy the activity greatly because there's a rich and ever-growing toolset to develop anything you can imagine. I also find it very soothing because while software can behave erratically, it's a familiar beast that can be tamed by relaxing into the system. Working with hardware this semester was a completely different experience from the rest of my university career.
-
-I'll always fondly recall my childhood playing with Lego Mindstorms, an 
-
-Hardware lessons aside, this has been a rich lesson in ideation and prototyping. I hope to carry this experience into the many projects and discussions to come in the future.
 [insert pixar picture]
-
 
 ### Sensors and Actuators
 
