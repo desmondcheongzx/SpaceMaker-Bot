@@ -35,7 +35,6 @@ Additionally to explore the various movement patterns that SpaceMaker could empl
 
 In Tacit Space Maker mode, SpaceMaker rotates until it finds two people standing too close too each other. It then repeatedly moves back and forth between the two people to encourage them to move apart.
 
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_tacit_space_maker.gif" height="250"/>
 ![Space maker mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tacit_space_maker.gif)
 
 ### Gantry mode
