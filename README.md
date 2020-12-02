@@ -36,12 +36,13 @@ Additionally to explore the various movement patterns that SpaceMaker could empl
 In Tacit Space Maker mode, SpaceMaker rotates until it finds two people standing too close too each other. It then repeatedly moves back and forth between the two people to encourage them to move apart.
 
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_tacit_space_maker.gif" height="250"/>
+![Space maker mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tacit_space_maker.gif)
 
-### Gantry
+### Gantry mode
 
 In Gantry mode, SpaceMaker waits until someone crosses its path (perhaps at the entrace to a room or building). It then moves to the position that the person occupied, and waits there for three seconds before moving back to its original waiting position. This is meant to discourage people from following too closely behind someone else and can be used in places like entrances to buildings or elevators and escalators.
 
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_gantry.gif" height="250"/>
+![Gantry mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_gantry.gif)
 
 ### Iteration #1.1 Reliable ultrasound distance sensing
 One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
@@ -67,13 +68,13 @@ After our first iteration, I immediately received feedback that the outward appe
 
 It was around this time that I also started working with a second robot.
 
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_tag_team.gif" height="250"/>
+![Tag team](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tag_team.gif)
 
 We continued playing around with the form of SpaceMaker by using traffic cones of larger and larger sizes. Unfortunately, while 12-inch traffic cones started to reach the point where Spacemaker was properly covered up, we found that the motors were unable to keep up with the load.
 
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/front.jpg" height="250"/>
 
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_large_cone.gif" height="250"/>
+![Moving with a large cone](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_large_cone.gif)
 
 And so we switched from plastic cones to cloth cones to decrease the load. This helped, but not enough to allow SpaceMaker to move.
 
@@ -93,7 +94,7 @@ Adding the second ultrasound enabled us to program an extra movement pattern on 
 
 Because our current robot design only support bidirectional distance sensing and movements, we achieved equidistance by sampling distances along a rotating axis. i.e., SpaceMaker rotates ~1 quadrant every few seconds and moves back and forth accordingly to find an equilibrium point.
 
-<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_equidistance.gif" height="250"/>
+![Equidistance mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_equidistance.gif)
 
 ## Iteration #3 - Solving movement issues with more power and H-bridges
 
@@ -124,7 +125,7 @@ Following the previous iteration, SpaceMaker is finally able to move under load 
 
 The Bluetooth modules I'd purchased had come without any accompanying documentation. Thankfully they seemed like standard HC-05 modules, and by using the many tutorials, YouTube videos, and fora available, we managed to set up a Bluetooth connection between our Arduino and a laptop/smartphone.
 
-[insert wireless gif]
+![Wireless movement](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/wireless.gif)
 
 This was also the stage where we were pretty familiar with the system and its shortcomings, so we also made many other tweaks. For example, adjusting the length of spacers below the robot to improve the balance provided by ball bearings; removing the default wires to the mobile chasis and simplifying the wiring for our sensors and actuators; adding a platform above the circuit boards to protect the wiring as well as provide a stable base for holding the battery packs and lose components in place.
 
