@@ -56,57 +56,60 @@ void setup() {
 }
 
 void loop() {
-  if (robot_mode == 0) {
-    make_space();
-  }
-  else if (robot_mode == 1) {
-    gantry();
-  }
-  else if (robot_mode == 2) {
-    maintain_equidistance();
-  }
-  else if (robot_mode == 3) {
-    check_bt();
+  switch(robot_mode) {
+    case 0:
+      make_space();
+      break;
+    case 1:
+      gantry();
+      break;
+    case 2:
+      maintain_equidistance();
+      break;
+    case 3:
+      check_bt();
+      break;
   }
 }
 
 void check_bt() {
   if (EEBlue.available()) {
-    char val = EEBlue.read();
-    Serial.write(val);
-    if (val == 'w') {
-      forward(1);
-    }
-    if (val == 's') {
-      backward(1);
-    }
-    if (val == 'a') {
-      rotate_l(quads);
-    }
-    if (val == 'd') {
-      rotate_r(quads);
-    }
-    if (val == '2') {
-      quads++;
-    }
-    if (val == '3') {
-      quads--;
-    }
-    if (val == '0') {
-      l_power += 25;
-      analogWrite(pwm_l, l_power);
-    }
-    if (val == '9') {
-      l_power -= 5;
-      analogWrite(pwm_l, l_power);
-    } 
-    if (val == '8') {
-      r_power += 25;
-      analogWrite(pwm_r, r_power);
-    }
-    if (val == '7') {
-      r_power -= 5;
-      analogWrite(pwm_r, r_power);
+    char bt_val = EEBlue.read();
+    switch(bt_val) {
+      case 'w':
+        forward(1);
+        break;
+      case 'a':
+        rotate_l(quads);
+        break;
+      case 's':
+        backward(1);
+        break;
+      case 'd':
+        rotate_r(quads);
+        break;
+      case '5':
+        quads++;
+        break;
+      case '6':
+        quads--;
+        break;
+      case '2':
+        l_power += 25;
+        analogWrite(pwm_l, l_power);
+        break;
+      case '1':
+        l_power -= 5;
+        analogWrite(pwm_l, l_power);
+        break;
+      case '9':
+        r_power += 25;
+        analogWrite(pwm_r, r_power);
+        break;
+      case '8':
+        r_power -= 5;
+        analogWrite(pwm_r, r_power);
+        break;
     }
   }
 }
@@ -218,15 +221,14 @@ int is_equidistant() {
 }
 
 int get_distance(int cur_trig, int cur_echo) {
-  int lowest = 1000;
+  int sum = 0;
+  int n_trials = 15;
   // fire the ultrasound multiple times and take the minimum reading
-  for (int a = 0; a < 15; ++a) {
+  for (int a = 0; a < n_trials; ++a) {
     int distance = fire_ultrasound(cur_trig, cur_echo);
-    if (distance < lowest) {
-      lowest = distance;
-    }
+    sum += distance;
   }
-  return lowest;
+  return distance / n_trials;
 }
 
 int fire_ultrasound(int cur_trig, int cur_echo) {
