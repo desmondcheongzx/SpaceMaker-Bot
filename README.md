@@ -2,17 +2,46 @@
 
 Demo video: https://vimeo.com/482537350
 
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/front.JPG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/full.JPG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/side.JPG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/back.JPG" height="250"/>
+
 ## Concept
 
 The SpaceMaker bot started out as a concept to tacitly encourage social distancing. During the currant pandemic, everyone is constantly inundated with messages to maintain their distance. However, this system could use improvements. After months of hearing the same message, people get fatigued. Additionally, there is a natural impulse for humans to move closer when interacting or working together.
 
 Instead of relying on explicit warnings to maintain social distance, could we instead rely on innate social behaviours to achieve the same outcome? One instinct that humans have is to avoid moving objects, or to step away from objects that are steadily moving towards you. Another instinct is to follow the directions given by certain learned authoritative forms such as traffic signs. With SpaceMaker, we leverage the fact that traffic cones are used around the world to delimit spaces and control movement to tacitly encourage social distancing in an area.
 
+[insert picture of first sketch]
+
 However, as can be seen from the demo video, SpaceMaker has evolved beyond the scope of social distancing. It has become an exploration of automating and enriching the possibilities of space delimitation in both public and private spaces, for both traffic control (such as [reversible lanes](https://en.wikipedia.org/wiki/Reversible_lane)) and control of human movement.
 
-![Tag team](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tag_team.gif)
 
 ## Iteration #1 - Moving the robot and initial designs
+
+As a start, we received a robotic base that was pre-wired and came with its own DC motors. Our first step was to figure out how to make it move, and what form we want it to take on. Movement and distance sensing was solved by testing the effects of pin outputs one by one. As for the form, we wanted to make something tall and noticeable that could be mounted onto the robot. After making some cardboard prototypes with a precision knife, we settled on the following cutout pattern for laser printing.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mounts.PNG" height="250"/>
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount2.jpg" height="250"/>
+
+At this stage we experimented with many different heights of mounts to see how far we could push it before SpaceMaker became too unstable.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/all_mounts.jpg" height="250"/>
+
+Additionally to explore the various movement patterns that SpaceMaker could employ to encourage social distancing, we tried the following movement modes.
+
+### Tacit Space Maker Mode
+
+In Tacit Space Maker mode, SpaceMaker rotates until it finds two people standing too close too each other. It then repeatedly moves back and forth between the two people to encourage them to move apart.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_tacit_space_maker.gif" height="250"/>
+
+### Gantry
+
+In Gantry mode, SpaceMaker waits until someone crosses its path (perhaps at the entrace to a room or building). It then moves to the position that the person occupied, and waits there for three seconds before moving back to its original waiting position. This is meant to discourage people from following too closely behind someone else and can be used in places like entrances to buildings or elevators and escalators.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_gantry.gif" height="250"/>
 
 ### Iteration #1.1 Reliable ultrasound distance sensing
 One drawback of the ultrasound sensors we were using is that they're really only accurate most of the time within a certain distance. Thankfully this is familiar territory in machine learning and probabilistic methods where we have algorithms that are only probably approximately correct.
@@ -33,49 +62,80 @@ int get_distance(int cur_trig, int cur_echo) {
 We could have also explored using a hidden markov model with the true distance as the latent variable, and the ultrasound reading as the observed variable. Our true distance is allowed to change from state to state, but every true distance is correlated with its previous true distance. Moreover, ultrasound readings are correlated with the true distance at the point in time. We could even combine this method with the averaging method above. These dependencies should give us a model that's resilient to noisy ultrasound readings. It would be interesting to see how accurate we could make our ultrasound readings using computation alone, but that's an experiment for another time.
 
 ## Iteration #2 - Traffic cones and experimenting with form
-small cone -> Medium cone ->
+
+After our first iteration, I immediately received feedback that the outward appearance of the robot could be improved. As it was now, it wasn't very readable in terms of how people should respond to it. It was suggested that perhaps covering the robot with a traffic cone would be perfect in terms of signalling to people that they should maintain their distance. We immediately acquired a set of 9 inch traffic cones to play around with this idea.
+
+It was around this time that I also started working with a second robot.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_tag_team.gif" height="250"/>
+
+We continued playing around with the form of SpaceMaker by using traffic cones of larger and larger sizes. Unfortunately, while 12-inch traffic cones started to reach the point where Spacemaker was properly covered up, we found that the motors were unable to keep up with the load.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/front.jpg" height="250"/>
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_large_cone.gif" height="250"/>
+
+And so we switched from plastic cones to cloth cones to decrease the load. This helped, but not enough to allow SpaceMaker to move.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/full.JPG" height="250"/>
 
 ### Iteration #2.1 Adding a second ultrasound sensor
-From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The question was how should this sensor be mounted?
-
-The first ultrasound sensor had a convenient dock at the front of the mobile chasis, however no such dock existed for a second ultrasound. As such, we laser cut a holder for this rear ultrasound.
+From the very first sketch it was apparent that keeping track of distances in multiple directions would be extremely helpful for maintaining equidistance. In terms of wiring another ultrasound sensor to the Arduino, this wasn't any different from setting up the first ultrasound sensor. The main challenge here was laser cutting a holder to provide a stable platform for this rear ultrasound.
 
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG" height="250"/>
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg" height="250"/>
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg" height="250"/>
 <img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg" height="250"/>
 
+### Equidistance mode
+
+Adding the second ultrasound enabled us to program an extra movement pattern on top of the two that we previously discussed. In equidistance mode, SpaceMaker tries to stay as far away from all objects that surround it. The idea is that one SpaceMaker maintains equidistance, but a population of SpaceMakers creates social distance, as people moving and interacting in a space are tacitly encouraged to navigate around the robots.
+
+Because our current robot design only support bidirectional distance sensing and movements, we achieved equidistance by sampling distances along a rotating axis. i.e., SpaceMaker rotates ~1 quadrant every few seconds and moves back and forth accordingly to find an equilibrium point.
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/spacemaker_equidistance.gif" height="250"/>
+
 ## Iteration #3 - Solving movement issues with more power and H-bridges
 
+In our previous iteration, we tried to increase the size of traffic cones used. The goal was to completely cover the robotic base that moves the cone and see whether that design works out better. However, immediately after mounting cones that were taller than 9 inches, we found that the load was too heavy for SpaceMaker and our robot refused to move.
+
+Reading up on DC motors and measuring the voltage being fed into the motors of our robot, we realised that the stalling issue was a result of too little power being supplied. e first tried to overcome this by connecting portable powerbanks to the arduino in addition to the 2x1.5V AA batteries powering the mobile base. This improved the situation, but was still insufficient. Next, we purchased a H-Bridge so that we could power our motors directly with a separate power source. This H-Bridge would then be controlled via connections to the Arduino.
+
+Installing this H-Bridge gave us even more freedom with our power source. We first moved on to a 9V battery. Increasing the voltage of our power source seemed to allow our motors to spin faster and we declared a premature victory. But in terms of solving our mobility issues, we actually regressed here. Although we'd switched to 9V batteries, we were using alkaline batteries that discharge slowly. When there's no load, this isn't an issue. But under load, DC motors require a large current to overcome stalling, so alkaline batteries wouldn't do.
+
+Switching to 2 AA nickel metal hydride (NiMH) batteries, which discharge faster, showed improvements in the right direction so we scaled up to a 9.6V 2400mAh NiMH battery pack. The first time I plugged in this battery pack and saw how fast the robot ran, I laughed out of surprise. With that our power management issues were resolved.
+
+[insert picture of battery pack]
+
 ### Iteration #3.1 - Safety concerns
-As we added more power, I started thinking about ways to control power such as with a switch. The initial reasoning was to preserve battery charge so that I could maximise the voltage that SpaceMaker was receiving. But around the time that I switched to a 9.6V 2400mAh NiMH battery pack, my circuits started to smoke, and I melted through wires on multiple occassions.
+As we added more power, I started thinking about ways to turn the power on and off with a switch. The initial reasoning was to preserve battery charge to maximise the voltage that SpaceMaker was receiving. But around the time that I switched to the NiMH battery pack, my circuits started to smoke, and I melted through wires on multiple occassions.
 
 [insert pic of melted wire]
 
-This was now no longer a question of power conservation, but a question of safety. So now before testing any circuits with new battery packs, we made sure to first solder on a switch between the battery pack and the H-bridge. This gave us an emergency power cut-off every time something went wrong. The next step was to prevent things from going wrong in the first place.
+This was now a question of safety and before continuing work with the new battery packs, we made sure to first solder on a switch between the battery pack and the H-bridge. This gave us an emergency power cut-off every time something went wrong. Next, we had to prevent things from going wrong in the first place.
 
 [insert pic of switch]
 
-Going through our notes on the burnt wires, I noticed that it was always the same wire that melted: a thin wire that connected the ground of the H-bridge to the ground of the Arduino board. I spent some time thinking about how I could remove this wire from the circuit, but it was a necessary connection for the Arduino board to control the relays and PWMs in the H-bridge. I roped in my housemate who's majoring in engineering, but neither of us could figure out what was going wrong in the circuit. So in the end we decided that if the wire was melting because there was too much current flowing through it, we simply had to increase the resistance of the wire. Playing around, we found that a 330 ohm resistor was sufficient to prevent further mishaps, while still allowing sufficient current to flow through.
+Going through my logs on the burnt wires, I noticed that it was always the same wire that melted: a thin wire that connected the ground of the H-bridge to the ground of the Arduino board. I spent some time thinking about how I could remove this wire from the circuit, but it was a necessary connection for the Arduino board to control the relays and pulse width modulators in the H-bridge. I roped in my housemate who's majoring in engineering, but neither of us could figure out what was going wrong in the circuit. So in the end we decided that if the wires were melting because there was too much current flowing through, we simply had to increase the resistance of the wires. Playing around, we found that a 330 ohm resistor was sufficient to prevent further mishaps, while still allowing sufficient current to flow through.
 
 [insert pic of resistor]
 
-Finally, there was still further electrical interference between the Arduino board and the H-bridge. Realising that this was the cause of various unexpected behaviours and short-circuits took some time, but once I realised it, separating the two circuit boards with a non-conducting material was easy enough and sufficient to solve the issue.
+Finally, there was electrical interference between the Arduino board and the H-bridge that caused various unexpected behaviours and short-circuits. This was resolved by separating the two circuit boards with a non-conducting material.
 
 ## Iteration #4 - Going wireless
 
 Following the previous iteration, SpaceMaker is finally able to move under load and we were free to move on to other interesting questions. At the start of this project, I was curious about how a population of SpaceMakers might change the pattern of human movement and interaction within a space. I was also curious about what applications could be developed if we had the ability to communicate between SpaceMakers and/or a command centre (which could be another SpaceMaker). So it was finally time to jump into Bluetooth communication.
 
-The Bluetooth modules I'd purchased had come without any accompanying documentation. Thankfully they seemed like standard HC-05 modules, and by using the many tutorials, YouTube videos, and fora available on this module, within a week we managed to set up a Bluetooth connection between our Arduino and a laptop/smartphone.
+The Bluetooth modules I'd purchased had come without any accompanying documentation. Thankfully they seemed like standard HC-05 modules, and by using the many tutorials, YouTube videos, and fora available, we managed to set up a Bluetooth connection between our Arduino and a laptop/smartphone.
 
 [insert wireless gif]
 
-This was also the stage where we were pretty familiar with the whole system we were working with and all the tiny challenges that needed to be addressed, so many other tweaks took place. For example, adjusting the length of spacers below the robot to improve the balance provided by ball bearings; removing the default wires to the mobile chasis and simplifying the wiring for our sensors and actuators; adding a platform above the circuit boards to protect the wiring as well as provide a stable base for holding the battery packs and lose components in place.
+This was also the stage where we were pretty familiar with the system and its shortcomings, so we also made many other tweaks. For example, adjusting the length of spacers below the robot to improve the balance provided by ball bearings; removing the default wires to the mobile chasis and simplifying the wiring for our sensors and actuators; adding a platform above the circuit boards to protect the wiring as well as provide a stable base for holding the battery packs and lose components in place.
 
 ### Iteration #4.1 On-the-fly pulse-width modulation
-As our prototype became more fleshed out and the deadline for the final video drew nearer, we had to start testing out SpaceMaker in different terrains. However, outdoor terrains were challenging because slopes and debris would often cause SpaceMaker to stall. Thankfully, we'd just spent weeks scaling up the amount of power available to our DC motors, so stalling issues could easily be solved by increasing the power supplied to each motor via pulse-width modulation (PWM) according to their performance.
+As our prototype became more fleshed out and the deadline for the final video drew nearer, we had to start testing out SpaceMaker in different terrains. However, outdoor terrains were challenging because slopes and debris would often cause SpaceMaker to stall. Thankfully, we'd just spent weeks scaling up the amount of power available to our DC motors, so stalling issues could now be solved by increasing the power supplied to each motor via pulse-width modulation (PWM) according to their performance.
 
-To improve the convenience of fine-tuning the PWM as well as to add the ability to adjust the PWM as we went from terrain to terrain, I added a switch to the Bluetooth input loop. Now, in addition to movement commands, we could simply send numeric characters to SpaceMaker via Bluetooth in order to adjust the power being sent to each motor. It's a little crude, but it worked for our circumstances.
+To improve the convenience of fine-tuning the PWM as well as to add the ability to adjust the PWM as we moved from terrain to terrain, I added a switch to the Bluetooth input loop. Now, in addition to movement commands, we could simply send numeric characters to SpaceMaker via Bluetooth in order to adjust the power being sent to each motor. It's a little crude, but it worked for our circumstances.
 ```
 void check_bt() {
   if (EEBlue.available()) {
@@ -104,13 +164,15 @@ void check_bt() {
 ```
 
 ## Creating the demo video
-At this point, we had a working prototype and it was time to create a demo video. Throughout the prototyping process, I had imagined SpaceMaker to be a social distancing robot as originally envisioned. However, as we worked on the prototype and the various technical challenges came to light, it became clear that we would need a lot more technical progress (most notably, the ability to use multiple SpaceMakers) before some of these ideas become feasible. I also wasn't convinced that social distancing was the right use case for this robot, and slowly lost interest in that idea.
+At this point, we had a working prototype and it was time to create a demo video. Throughout the prototyping process, I had thought of SpaceMaker as a social distancing robot, as originally envisioned. However, as we worked on the prototype and the various technical challenges came to light, it became clear that we would need a lot more technical progress (most notably, the ability to use multiple SpaceMakers and/or more complicated sensing patterns) before some of these ideas become feasible. I also wasn't convinced that social distancing was the right use case for this robot, and slowly lost interest in that idea.
 
-Then, after many showers spent thinking about this, I started to wonder whether SpaceMaker could be used to expand the range of use cases for existing traffic cones. This eventually led to the idea of proximity-based traffic cones in parking lots. This would enable users such as homeowners/passholders/handicapped drivers to reserve parking spaces.
+Then, after many nights spent thinking about this, I started to wonder whether SpaceMaker could be used to expand the range of use cases for existing traffic cones. This eventually led to the idea of proximity-based traffic cones in parking lots that would enable users such as homeowners, passholders, and handicapped drivers to reserve parking spaces.
 
-I also drew inspiration from one of my colleague's projects for a [smart sign](https://hiloni25.tumblr.com/post/635750285256572928/smart-sign). I thought that it would be interesting to make a mobile version of the smart sign, which would be a natural extension of SpaceMaker's current design because traffic cones already serve as a form of warning, and we had also established a wireless connection between SpaceMaker and smartphones.
+I also drew inspiration from a colleague's project for a [smart sign](https://hiloni25.tumblr.com/post/635750285256572928/smart-sign). I thought that it would be interesting to make a mobile version of the smart sign, which would be a natural extension of SpaceMaker's current design because traffic cones already serve as a form of warning, and we had already established a wireless connection between SpaceMaker and smartphones.
 
-Finally, there was the actual filming of these ideas. I found this to be a very productive process in terms of ideation. When explaining the concept of the video to my film crew (my housemates), I needed to pinpoint the ideas that I wanted to convey and the scenes we would need to achieve this. At the same time, the team pointed out where some ideas didn't make much sense, or where they could be improved or better presented. In the process the concepts being presented became much more refined compared to the very rough story board I had prepared (see below). This goes to show how we slowly become overfamiliar with a concept while we work, which makes us blind to various shortcomings. In times like these, outside perspectives are imperative to improve the design and communication of an idea.
+Finally, there was the actual filming of these ideas. This turned out to be a productive process in terms of ideation. When explaining the concept of the video to my film crew (my housemates), I needed to pinpoint the ideas that I wanted to convey and the scenes we would need to achieve this. At the same time, the team pointed out where some ideas didn't make much sense, or where they could be improved or better presented. In the process, the concepts being presented became much more refined compared to my original rough story board (see below). This goes to show how we slowly become overfamiliar with a concept while we work, which makes us blind to various shortcomings. In times like these, outside perspectives are imperative to improve the design and communication of an idea.
+
+[insert picture of storyboard]
 
 ## Future directions
 As the semester came to a close, we had to start wrapping up our projects. However, if there were one truism that we've learnt from this course, it would be that every iteration informs the next iteration. True enough, after making my final prototype and hearing my colleagues' critiques, I'm left with many ideas to try out. Someday, if I have the itch to work on a hardware project again, I might well implement some of these improvements. But for now here are my thoughts.
@@ -137,127 +199,4 @@ Watching SpaceMaker move, it's immediately noticeable that it moves in fits and 
 ## Final remarks
 Coming from a software background, I was caught completely off gaurd by the complexities involved in working with hardware. Instead of only working with ideas and code, there were questions of design, material, weight, circuits, power, and all sorts of other physical considerations to take note of. In light of all this complexity, it was very important to move back-and-forth, side-to-side, from rough sketches to higher and higher resolution prototypes. This has been a rich lesson in ideation and prototyping and I hope to carry this experience into the many projects and discussions to come in life.
 
-[insert pixar picture]
-
-### Sensors and Actuators
-
-The SpaceMaker bot relies on two ultrasound sensors, placed roughly along the same axis, to measure the distances to the closest objects in front and behind it. It also uses two motors to achieve forwards, backwards, and rotation movements.
-
-### Mounts
-
-In order to mount the rear ultrasound, we make the following lasercut to serve as a holder for the ultrasound.
-
-![Lasercut diagram for ultrasound mount](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG)
-![Ultrasound holder image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg)
-![Ultrasound holder image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg)
-![Ultrasound holder image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg)
-
-Additionally, in order to support larger traffic cones on the SpaceMaker, we created several cardboard mounts that fit different heights of traffic cones. The cardboard mounts roughly follow the illustrator schematic for lasercutting, with the appropriate modifications to accomodate various heights.
-
-![Lasercut diagram for mounts](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mounts.PNG)
-![All mounts](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/all_mounts.jpg)
-![Mount image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount1.jpg)
-![Mount image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount2.jpg)
-![Mount image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount3.jpg)
-
-We tried playing around with the form of SpaceMaker by using traffic cones of larger and larger sizes. Unfortunately, while 12-inch traffic cones started to reach the point where Spacemaker was properly covered up, we found that the motors were unable to keep up with the load.
-
-![Large cone movement](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_large_cone.gif)
-
-## Software
-
-The following sections describe various movement patterns employed by SpaceMaker, as well as demo videos to give a sense of how these patterns might play out.
-
-### Tacit Space Maker
-
-In Tacit Space Maker mode, the SpaceMaker rotates until it finds two people standing too close too each other. It then repeatedly moves back and forth between the two people to encourage them to move apart.
-
-![Tacit Space Maker Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tacit_space_maker.gif)
-
-### Gantry
-
-In Gantry mode, the SpaceMaker waits until someone crosses its path (perhaps at the entrace to a room or building). It then moves to the position that the person occupied, and waits there for three seconds before moving back to its original waiting position. This is meant to discourage people from following too closely behind someone else.
-
-![Gantry Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_gantry.gif)
-
-### Equidistance mode
-
-In equidistance mode, the SpaceMaker tries to stay as far away from all objects that surround it. The idea is that one SpaceMaker maintains equidistance, but a population of SpaceMakers create social distance, as people moving and interacting in a space are tacitly encouraged to navigate around the robots.
-
-Implementing this with the current base was technically challenging for two reasons:
-
-1. Bidirectional movement restriction
-
-2. Bidirectional distance sensing
-
-These restrictions mean that we can only read and adjust for the distance along one axis at any one point in time. In order to maintain equidistance in all directions, SpaceMaker rotates ~1 quadrant every few seconds. By repeated sampling of random axes, SpaceMaker can maintain equidistance on average.
-
-![Equidistance Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_equidistance.gif)
-# SpaceMaker-Bot
-
-![Front view of SpaceMaker](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/front.jpg)
-
-SpaceMaker Bot is a concept designed to encourage tacit social distancing. During the current pandemic, everyone is constantly inundated with messages to maintain their distance. However, this system could use improvements. After months of hearing the same message, people get fatigued. Additionally, there is a natural impulse for humans to move closer, because that's the nature and pattern of human interaction.
-
-A good method to encourage people to prevent people from getting too close should also rely on innate patterns of social interaction. One innate instinct is to avoid moving objects, or to step away from objects that are steadily moving towards you. This idea underlies the movement patterns of SpaceMaker.
-
-Additionally, we rely on form to encourage certain behaviours. Traffic cones are possibly universally used to control the movement of people and objects. We leverage this authority of form in order to enhance SpaceMaker's ability to create distance.
-
-![Tag team](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tag_team.gif)
-
-## Hardware
-
-### Sensors and Actuators
-
-The SpaceMaker bot relies on two ultrasound sensors, placed roughly along the same axis, to measure the distances to the closest objects in front and behind it. It also uses two motors to achieve forwards, backwards, and rotation movements.
-
-### Mounts
-
-In order to mount the rear ultrasound, we make the following lasercut to serve as a holder for the ultrasound.
-
-![Lasercut diagram for ultrasound mount](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound_holders.PNG)
-![Ultrasound holder image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound1.jpg)
-![Ultrasound holder image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound2.jpg)
-![Ultrasound holder image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/ultrasound3.jpg)
-
-Additionally, in order to support larger traffic cones on the SpaceMaker, we created several cardboard mounts that fit different heights of traffic cones. The cardboard mounts roughly follow the illustrator schematic for lasercutting, with the appropriate modifications to accomodate various heights.
-
-![Lasercut diagram for mounts](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mounts.PNG)
-![All mounts](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/all_mounts.jpg)
-![Mount image 1](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount1.jpg)
-![Mount image 2](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount2.jpg)
-![Mount image 3](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/mount3.jpg)
-
-We tried playing around with the form of SpaceMaker by using traffic cones of larger and larger sizes. Unfortunately, while 12-inch traffic cones started to reach the point where Spacemaker was properly covered up, we found that the motors were unable to keep up with the load.
-
-![Large cone movement](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_large_cone.gif)
-
-## Software
-
-The following sections describe various movement patterns employed by SpaceMaker, as well as demo videos to give a sense of how these patterns might play out.
-
-### Tacit Space Maker
-
-In Tacit Space Maker mode, the SpaceMaker rotates until it finds two people standing too close too each other. It then repeatedly moves back and forth between the two people to encourage them to move apart.
-
-![Tacit Space Maker Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_tacit_space_maker.gif)
-
-### Gantry
-
-In Gantry mode, the SpaceMaker waits until someone crosses its path (perhaps at the entrace to a room or building). It then moves to the position that the person occupied, and waits there for three seconds before moving back to its original waiting position. This is meant to discourage people from following too closely behind someone else.
-
-![Gantry Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_gantry.gif)
-
-### Equidistance mode
-
-In equidistance mode, the SpaceMaker tries to stay as far away from all objects that surround it. The idea is that one SpaceMaker maintains equidistance, but a population of SpaceMakers create social distance, as people moving and interacting in a space are tacitly encouraged to navigate around the robots.
-
-Implementing this with the current base was technically challenging for two reasons:
-
-1. Bidirectional movement restriction
-
-2. Bidirectional distance sensing
-
-These restrictions mean that we can only read and adjust for the distance along one axis at any one point in time. In order to maintain equidistance in all directions, SpaceMaker rotates ~1 quadrant every few seconds. By repeated sampling of random axes, SpaceMaker can maintain equidistance on average.
-
-![Equidistance Mode](https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/videos/spacemaker_equidistance.gif)
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/end_card.JPG" height="250"/>
