@@ -13,7 +13,7 @@ The SpaceMaker bot started out as a concept to tacitly encourage social distanci
 
 Instead of relying on explicit warnings to maintain social distance, could we instead rely on innate social behaviours to achieve the same outcome? One instinct that humans have is to avoid moving objects, or to step away from objects that are steadily moving towards you. Another instinct is to follow the directions given by certain learned authoritative forms such as traffic signs. With SpaceMaker, we leverage the fact that traffic cones are used around the world to delimit spaces and control movement to tacitly encourage social distancing in an area.
 
-[insert picture of first sketch]
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/initial_sketch.JPG" height="250"/>
 
 However, as can be seen from the demo video, SpaceMaker has evolved beyond the scope of social distancing. It has become an exploration of automating and enriching the possibilities of space delimitation in both public and private spaces, for both traffic control (such as [reversible lanes](https://en.wikipedia.org/wiki/Reversible_lane)) and control of human movement.
 
@@ -105,20 +105,16 @@ Installing this H-Bridge gave us even more freedom with our power source. We fir
 
 Switching to 2 AA nickel metal hydride (NiMH) batteries, which discharge faster, showed improvements in the right direction so we scaled up to a 9.6V 2400mAh NiMH battery pack. The first time I plugged in this battery pack and saw how fast the robot ran, I laughed out of surprise. With that our power management issues were resolved.
 
-[insert picture of battery pack]
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/batteries.JPG" height="250"/>
+
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/wiring.JPG" height="250"/>
 
 ### Iteration #3.1 - Safety concerns
 As we added more power, I started thinking about ways to turn the power on and off with a switch. The initial reasoning was to preserve battery charge to maximise the voltage that SpaceMaker was receiving. But around the time that I switched to the NiMH battery pack, my circuits started to smoke, and I melted through wires on multiple occassions.
 
-[insert pic of melted wire]
-
 This was now a question of safety and before continuing work with the new battery packs, we made sure to first solder on a switch between the battery pack and the H-bridge. This gave us an emergency power cut-off every time something went wrong. Next, we had to prevent things from going wrong in the first place.
 
-[insert pic of switch]
-
 Going through my logs on the burnt wires, I noticed that it was always the same wire that melted: a thin wire that connected the ground of the H-bridge to the ground of the Arduino board. I spent some time thinking about how I could remove this wire from the circuit, but it was a necessary connection for the Arduino board to control the relays and pulse width modulators in the H-bridge. I roped in my housemate who's majoring in engineering, but neither of us could figure out what was going wrong in the circuit. So in the end we decided that if the wires were melting because there was too much current flowing through, we simply had to increase the resistance of the wires. Playing around, we found that a 330 ohm resistor was sufficient to prevent further mishaps, while still allowing sufficient current to flow through.
-
-[insert pic of resistor]
 
 Finally, there was electrical interference between the Arduino board and the H-bridge that caused various unexpected behaviours and short-circuits. This was resolved by separating the two circuit boards with a non-conducting material.
 
@@ -172,7 +168,7 @@ I also drew inspiration from a colleague's project for a [smart sign](https://hi
 
 Finally, there was the actual filming of these ideas. This turned out to be a productive process in terms of ideation. When explaining the concept of the video to my film crew (my housemates), I needed to pinpoint the ideas that I wanted to convey and the scenes we would need to achieve this. At the same time, the team pointed out where some ideas didn't make much sense, or where they could be improved or better presented. In the process, the concepts being presented became much more refined compared to my original rough story board (see below). This goes to show how we slowly become overfamiliar with a concept while we work, which makes us blind to various shortcomings. In times like these, outside perspectives are imperative to improve the design and communication of an idea.
 
-[insert picture of storyboard]
+<img src="https://github.com/desmondcheongzx/SpaceMaker-Bot/blob/main/images/storyboard.JPG" height="250"/>
 
 ## Future directions
 As the semester came to a close, we had to start wrapping up our projects. However, if there were one truism that we've learnt from this course, it would be that every iteration informs the next iteration. True enough, after making my final prototype and hearing my colleagues' critiques, I'm left with many ideas to try out. Someday, if I have the itch to work on a hardware project again, I might well implement some of these improvements. But for now here are my thoughts.
